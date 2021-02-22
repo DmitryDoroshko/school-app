@@ -9,13 +9,6 @@ body {
     background: white;
 }
 
-.container {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-
 /* Style the tab */
 .tab {
     overflow: hidden;
