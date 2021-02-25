@@ -22,14 +22,12 @@ $result_lang = $mysqli->query("SELECT * FROM foreign_language") or die($mysqli->
 ?>
 
 <?php if (isset($_SESSION["message"])) : ?>
-
     <div class="alert alert-<?php echo $_SESSION["msg_type"]; ?>">
         <?php
         echo $_SESSION['message'];
         unset($_SESSION['message']);
         ?>
     </div>
-
 <?php
 endif;
 ?>
@@ -53,45 +51,86 @@ endif;
             <div class="new-entry__student">
                 <h3>New Student</h3>
                 <form action="process.php" method="post">
+                    <input type="hidden" name="student-id" value="<?php if (!empty($student_id)) { echo $student_id;} ?>">
                     <div class="new-entry-wrap">
                         <label for="fclass">Class</label>
-                        <input type="text" id="fclass" name="fclass">
+                        <input type="text" id="fclass" name="fclass" value="<?php
+                            if (!empty($student_arr['class'])) {
+                                echo $student_arr['class'];
+                            }
+                        ?>">
                     </div>
                     <div class="new-entry-wrap">
                         <label for="fgroup">Group</label>
-                        <input type="text" id="fgroup" name="fgroup">
+                        <input type="text" id="fgroup" name="fgroup" value="<?php
+                        if (!empty($student_arr['group_'])) {
+                            echo $student_arr['group_'];
+                        }
+                        ?>">
                     </div>
                     <div class="new-entry-wrap">
                         <label for="ffirst-name">First Name</label>
-                        <input type="text" id="ffirst-name" name="ffirst-name">
+                        <input type="text" id="ffirst-name" name="ffirst-name" value="<?php
+                        if (!empty($student_arr['first_name'])) {
+                            echo $student_arr['first_name'];
+                        }
+                        ?>">
                     </div>
                     <div class="new-entry-wrap">
                         <label for="flast-name">Last Name</label>
-                        <input type="text" id="flast-name" name="flast-name">
+                        <input type="text" id="flast-name" name="flast-name" value="<?php
+                        if (!empty($student_arr['last_name'])) {
+                            echo $student_arr['last_name'];
+                        }
+                        ?>">
                     </div>
                     <div class="new-entry-wrap">
                         <label for="fpatronymic">Patronymic</label>
-                        <input type="text" id="fpatronymic" name="fpatronymic">
+                        <input type="text" id="fpatronymic" name="fpatronymic" value="<?php
+                        if (!empty($student_arr['patronymic'])) {
+                            echo $student_arr['patronymic'];
+                        }
+                        ?>">
                     </div>
                     <div class="new-entry-wrap">
                         <label for="fentry-date">Entry Date</label>
-                        <input type="date" id="fentry-date" name="fentry-date">
+                        <input type="text" id="fentry-date" name="fentry-date" value="<?php
+                        if (!empty($student_arr['entry_date'])) {
+                            echo $student_arr['entry_date'];
+                        }
+                        ?>">
                     </div>
                     <div class="new-entry-wrap">
                         <label for="fforeign-language-code">Foreign Language Code</label>
-                        <input type="text" id="fforeign-language-code" name="fforeign-language-code">
+                        <input type="text" id="fforeign-language-code" name="fforeign-language-code" value="<?php
+                        if (!empty($student_arr['foreign_language_code'])) {
+                            echo $student_arr['foreign_language_code'];
+                        }
+                        ?>">
                     </div>
                     <div class="new-entry-wrap">
                         <label for="fhome-address">Home Address</label>
-                        <input type="text" id="fhome-address" name="fhome-address">
+                        <input type="text" id="fhome-address" name="fhome-address" value="<?php
+                        if (!empty($student_arr['home_address'])) {
+                            echo $student_arr['home_address'];
+                        }
+                        ?>">
                     </div>
                     <div class="new-entry-wrap">
                         <label for="fphone-number">Phone Number</label>
-                        <input type="text" id="fphone-number" name="fphone-number">
+                        <input type="text" id="fphone-number" name="fphone-number" value="<?php
+                        if (!empty($student_arr['phone_number'])) {
+                            echo $student_arr['phone_number'];
+                        }
+                        ?>">
                     </div>
                     <div class="new-entry-wrap">
                         <label for="fmean-grade">Mean Grade</label>
-                        <input type="text" id="fmean-grade" name="fmean-grade">
+                        <input type="text" id="fmean-grade" name="fmean-grade" value="<?php
+                        if (!empty($student_arr['mean_grade'])) {
+                            echo $student_arr['mean_grade'];
+                        }
+                        ?>">
                     </div>
                     <?php if ($update_student == false) : ?>
                         <button type="submit" name="save-student" class="submit-btn submit-btn-student">
@@ -107,13 +146,18 @@ endif;
             <div class="new-entry__language">
                 <h3>New Language</h3>
                 <form action="process.php" method="post">
+                    <input type="hidden" name="language-id" value="<?php if (!empty($language_id)) {echo $language_id; }?>">
                     <div class="new-entry-wrap">
                         <label for="flanguage-code">Language Code</label>
-                        <input type="text" id="flanguage-code" name="flanguage-code">
+                        <input type="text" id="flanguage-code" name="flanguage-code" value="<?php if (!empty($language_arr['language_code'])) {
+                               echo $language_arr['language_code']; }?>">
                     </div>
                     <div class="new-entry-wrap">
                         <label for="flanguage-name">Language Name</label>
-                        <input type="text" id="flanguage-name" name="flanguage-name">
+                        <input type="text" id="flanguage-name" name="flanguage-name"
+                                value="<?php if (!empty($language_arr['language_name'])) {
+                                    echo $language_arr['language_name'];
+                                }?>">
                     </div>
                     <?php if($update_language == false):?>
                     <button type="submit" name="save-language" class="submit-btn submit-btn-foreign-language">
@@ -203,4 +247,3 @@ $result->free();
 /* закрываем подключение */
 $mysqli->close();
 ?>
-
