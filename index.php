@@ -36,6 +36,7 @@ endif;
     <div class="justify-content-center">
         <div class="tab">
             <button class="tablinks" onclick="openAction(event, 'login')">Log In</button>
+            <button class="tablinks" onclick="openAction(event, 'send-email')">Send Email</button>
             <button class="tablinks" onclick="openAction(event, 'new-entry')">New Entry</button>
             <button class="tablinks" onclick="openAction(event, 'students-info')">Students Info</button>
             <button class="tablinks" onclick="openAction(event, 'languages-info')">Languages Info</button>
@@ -47,17 +48,38 @@ endif;
             <h3>Log In</h3>
         </div>
 
+        <div id="send-email" class="tabcontent">
+            <form action="process.php" method="post">
+                <h3>Send Email</h3>
+                <div class="form-group">
+                    <label for="mail-topic" class="mail-topic-label">
+                        <span>Mail topic:</span>
+                    </label>
+                    <input type="text" name="mail-topic" id="mail-topic" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="mail-text" class="mail-text-label">Mail text:</label>
+                    <textarea name="mail-text" id="mail-text" cols="30" rows="10" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <button name="send-mail" type="submit" id="send-mail-btn" class="btn btn-primary"> Send</button>
+                </div>
+            </form>
+        </div>
+
         <div id="new-entry" class="tabcontent new-entry__flex">
             <div class="new-entry__student">
                 <h3>New Student</h3>
                 <form action="process.php" method="post">
-                    <input type="hidden" name="student-id" value="<?php if (!empty($student_id)) { echo $student_id;} ?>">
+                    <input type="hidden" name="student-id" value="<?php if (!empty($student_id)) {
+                        echo $student_id;
+                    } ?>">
                     <div class="new-entry-wrap">
                         <label for="fclass">Class</label>
                         <input type="text" id="fclass" name="fclass" value="<?php
-                            if (!empty($student_arr['class'])) {
-                                echo $student_arr['class'];
-                            }
+                        if (!empty($student_arr['class'])) {
+                            echo $student_arr['class'];
+                        }
                         ?>">
                     </div>
                     <div class="new-entry-wrap">
@@ -146,25 +168,31 @@ endif;
             <div class="new-entry__language">
                 <h3>New Language</h3>
                 <form action="process.php" method="post">
-                    <input type="hidden" name="language-id" value="<?php if (!empty($language_id)) {echo $language_id; }?>">
+                    <input type="hidden" name="language-id" value="<?php if (!empty($language_id)) {
+                        echo $language_id;
+                    } ?>">
                     <div class="new-entry-wrap">
                         <label for="flanguage-code">Language Code</label>
-                        <input type="text" id="flanguage-code" name="flanguage-code" value="<?php if (!empty($language_arr['language_code'])) {
-                               echo $language_arr['language_code']; }?>">
+                        <input type="text" id="flanguage-code" name="flanguage-code"
+                               value="<?php if (!empty($language_arr['language_code'])) {
+                                   echo $language_arr['language_code'];
+                               } ?>">
                     </div>
                     <div class="new-entry-wrap">
                         <label for="flanguage-name">Language Name</label>
                         <input type="text" id="flanguage-name" name="flanguage-name"
-                                value="<?php if (!empty($language_arr['language_name'])) {
-                                    echo $language_arr['language_name'];
-                                }?>">
+                               value="<?php if (!empty($language_arr['language_name'])) {
+                                   echo $language_arr['language_name'];
+                               } ?>">
                     </div>
-                    <?php if($update_language == false):?>
-                    <button type="submit" name="save-language" class="submit-btn submit-btn-foreign-language">
-                        Save language
-                    </button>
+                    <?php if ($update_language == false): ?>
+                        <button type="submit" name="save-language" class="submit-btn submit-btn-foreign-language">
+                            Save language
+                        </button>
                     <?php else: ?>
-                    <button type="submit" name="update-language" class="submit-btn submit-btn-foreign-language">Update language</button>
+                        <button type="submit" name="update-language" class="submit-btn submit-btn-foreign-language">
+                            Update language
+                        </button>
                     <?php endif; ?>
                 </form>
             </div>

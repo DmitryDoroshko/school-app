@@ -1,4 +1,13 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+include 'connections/data.php';
+require 'PHPMailer-master/src/Exception.php';
+require 'PHPMailer-master/src/PHPMailer.php';
+require 'PHPMailer-master/src/SMTP.php';
+
 $mysqli = new mysqli("localhost", "dmitry@localhost", "my-strong-password-here", "mysitedb")
 or die(mysqli_error($mysqli));
 mysqli_query($mysqli, "SET NAMES cp1251;") or die($mysqli->error);
@@ -10,10 +19,10 @@ define("COUNT_OF_LANGUAGE_FIELDS", 2);
 $update_student = false;
 $update_language = false;
 $student_arr = ["student_id" => 0, "class" => "", "group_" => "", "first_name" => "",
-                "last_name"=>"", "patronymic"=>"", "entry_date"=>"",
-                "foreign_language_code"=>"", "home_address"=>"",
-                "phone_number" =>"", "mean_grade"=>""];
-$language_arr = ["language_code"=>0, "language_name" =>""];
+    "last_name" => "", "patronymic" => "", "entry_date" => "",
+    "foreign_language_code" => "", "home_address" => "",
+    "phone_number" => "", "mean_grade" => ""];
+$language_arr = ["language_code" => 0, "language_name" => ""];
 $language_id = 0;
 $student_id = 0;
 
@@ -139,5 +148,48 @@ if (isset($_POST['update-language'])) {
         $_SESSION['msg_type'] = 'warning';
     }
     header("location: index.php");
+}
 
+if (isset($_POST['send-mail'])) {
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->Mailer = "smtp";
+
+    $mail->SMTPDebug = 1;
+    $mail->SMTPAuth = TRUE;
+    $mail->SMTPSecure = "tls";
+    $mail->Port = 587;
+    $mail->Host = "smtp.gmail.com";
+    $mail->Username = "dmitry.doroshko.99@gmail.com";
+    $mail->Password = $password_for_my_account;
+    $mail->IsHTML(true);
+    $to = "dmitry.doroshko.99@gmail.com";
+    $topic = $_POST['mail-topic'];
+    $message = $topic . "\n\n" . $_POST['mail-text'];
+
+    try {
+        $mail->AddAddress($to, "Dimitri Doroshko");
+        $mail->SetFrom("dmitry.doroshko.99@gmail.com", "from-name");
+        $mail->AddReplyTo("dmitry.doroshko.99@gmail.com", "reply-to-name");
+        $mail->AddCC("dmitry.doroshko.99@gmail.com", "cc-recipient-name");
+        $mail->Subject = $topic;
+        $content = $message;
+
+        $mail->MsgHTML($content);
+
+        if (!$content and !$topic) {
+            $_SESSION['message'] = "Please fill out the form before sending your message...";
+            $_SESSION['msg_type'] = 'danger';
+        } elseif (!$mail->Send()) {
+            $_SESSION['message'] = "Message has NOT been sent...";
+            $_SESSION['msg_type'] = 'danger';
+            var_dump($mail);
+        } else {
+            $_SESSION['message'] = "Message has been successfully sent...";
+            $_SESSION['msg_type'] = 'warning';
+        }
+
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
 }
